@@ -5,6 +5,7 @@ import by.itech.upload.controller.command.CommandProvider;
 import by.itech.upload.controller.parameter.RequestParameterName;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = "/upload", name = "FrontController")
+@MultipartConfig
 public class FrontController extends HttpServlet {
 
     private static final long serialVersionUID = -8174239011655758543L;
@@ -26,7 +28,7 @@ public class FrontController extends HttpServlet {
         this.doProcess(req, resp);
     }
 
-    public void doProcess(HttpServletRequest req, HttpServletResponse resp) {
+    public void doProcess(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String commandName = req.getParameter(RequestParameterName.COMMAND_NAME);
         CommandProvider commandProvider = CommandProvider.getInstance();
         Command command = commandProvider.getCommand(commandName);
