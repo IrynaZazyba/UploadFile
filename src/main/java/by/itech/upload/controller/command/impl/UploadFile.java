@@ -5,12 +5,14 @@ import by.itech.upload.logic.ServiceFactory;
 import by.itech.upload.logic.UploadFileService;
 import by.itech.upload.logic.UploadServiceException;
 import by.itech.upload.logic.validator.exception.IllegalFileFormatException;
+import by.itech.upload.logic.validator.exception.IllegalFileNameException;
 import by.itech.upload.logic.validator.exception.IllegalFileSizeException;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,8 @@ public class UploadFile implements Command {
     private final static String RESPONSE_MESSAGE_SUCCESS_UPLOAD = "File was successfully upload";
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_FORMAT = "Illegal file format";
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_SIZE = "Illegal file size";
-
+    private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_NAME = "File with the same name already exists";
+    private final static String REQUEST_FILE_PARAMETER = "img";
 
 
     @Override
@@ -36,9 +39,14 @@ public class UploadFile implements Command {
 
         try {
 
-            String fileLocation = uploadFileService.uploadFile(realPath, request.getPart("img"));
+            Part file = request.getPart(REQUEST_FILE_PARAMETER);
 
-            System.out.println(fileLocation);
+            if (file != null) {
+                String fileLocation = uploadFileService.uploadFile(realPath, file);
+            } else {
+
+
+            }
 
         } catch (UploadServiceException e) {
             response.setStatus(200);
@@ -52,7 +60,10 @@ public class UploadFile implements Command {
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_SIZE);
             ajaxResponse = gson.toJson(answer);
-        }
+        } catch (IllegalFileNameException e) {
+            response.setStatus(409);
+            answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_NAME);
+            ajaxResponse = gson.toJson(answer);        }
 
         return ajaxResponse;
     }

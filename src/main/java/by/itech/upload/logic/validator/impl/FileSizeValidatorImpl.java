@@ -6,6 +6,10 @@ public class FileSizeValidatorImpl implements FileSizeValidator {
 
     private final static int FILE_SIZE_LIMIT = 2097152;
 
+    public FileSizeValidatorImpl() {
+    }
+
+
     @Override
     public boolean validate(long fileSize) {
 
