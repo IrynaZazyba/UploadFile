@@ -1,6 +1,6 @@
-package by.itech.upload.controller.command.impl;
+package by.itech.upload.controller.command.ajax.impl;
 
-import by.itech.upload.controller.command.Command;
+import by.itech.upload.controller.command.ajax.AjaxCommand;
 import by.itech.upload.logic.ServiceFactory;
 import by.itech.upload.logic.UploadFileService;
 import by.itech.upload.logic.UploadServiceException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UploadFile implements Command {
+public class UploadFile implements AjaxCommand {
 
     private final static String RESPONSE_PARAMETER_MESSAGE = "message";
     private final static String RESPONSE_MESSAGE_SUCCESS_UPLOAD = "File was successfully upload";
@@ -43,6 +43,7 @@ public class UploadFile implements Command {
 
             if (file != null) {
                 String fileLocation = uploadFileService.uploadFile(realPath, file);
+                System.out.println(fileLocation);
             } else {
 
 

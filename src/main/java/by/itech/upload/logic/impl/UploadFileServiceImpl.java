@@ -40,6 +40,8 @@ public class UploadFileServiceImpl implements UploadFileService {
         FileSizeValidator fileSizeValidator = validatorFactory.getFileSizeValidator();
         FileNameValidator fileNameValidator = validatorFactory.getFileNameValidator();
 
+        System.out.println(part.getContentType());
+
         if (!fileFormatValidator.validate(part.getContentType())) {
             throw new IllegalFileFormatException("Illegal file format");
         }
