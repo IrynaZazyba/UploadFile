@@ -44,15 +44,18 @@ public class UploadFile implements AjaxCommand {
             if (file != null) {
                 String fileLocation = uploadFileService.uploadFile(realPath, file);
                 System.out.println(fileLocation);
+
+                response.setStatus(200);
+                answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_SUCCESS_UPLOAD);
+                ajaxResponse = gson.toJson(answer);
+
             } else {
 
 
             }
 
         } catch (UploadServiceException e) {
-            response.setStatus(200);
-            answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_SUCCESS_UPLOAD);
-            ajaxResponse = gson.toJson(answer);
+            response.sendRedirect("errorPage.jsp");
         } catch (IllegalFileFormatException e) {
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_FORMAT);
@@ -64,7 +67,8 @@ public class UploadFile implements AjaxCommand {
         } catch (IllegalFileNameException e) {
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_NAME);
-            ajaxResponse = gson.toJson(answer);        }
+            ajaxResponse = gson.toJson(answer);
+        }
 
         return ajaxResponse;
     }

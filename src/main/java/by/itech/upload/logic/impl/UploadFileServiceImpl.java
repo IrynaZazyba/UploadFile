@@ -2,6 +2,7 @@ package by.itech.upload.logic.impl;
 
 import by.itech.upload.bean.UploadFile;
 import by.itech.upload.dao.DAOFactory;
+import by.itech.upload.dao.DAOSQLException;
 import by.itech.upload.dao.FileInfoDAO;
 import by.itech.upload.logic.UploadFileService;
 import by.itech.upload.logic.UploadServiceException;
@@ -19,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 
 public class UploadFileServiceImpl implements UploadFileService {
@@ -51,40 +53,57 @@ public class UploadFileServiceImpl implements UploadFileService {
         }
 
         String fileName = part.getSubmittedFileName();
-        if (!fileNameValidator.validate(fileName,fileInfoDAO)) {
+        if (!fileNameValidator.validate(fileName, fileInfoDAO)) {
             throw new IllegalFileNameException("File with the same name already exists");
         }
 
-
+        String uploadPath = null;
         UploadFile file = new UploadFile();
         file.setTitle(fileName);
-        writeFileNameToDB(file);
-
-        String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY;
-        File uploadDir = new File(uploadPath);
-
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-            //todo если не записалось удалить???
-        }
-
-
         try {
+            writeFileNameToDB(file);
+            uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY;
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+                //todo если не записалось удалить???
+            }
             part.write(uploadPath + File.separator + fileName);
         } catch (IOException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             throw new UploadServiceException("Error with write file to the directory " + UPLOAD_DIRECTORY, e);
+        } catch (DAOSQLException e) {
+            throw new UploadServiceException("DAOException in UploadFileServiceImpl in uploadFile() method.", e);
         }
-
-
         return uploadPath + File.separator + fileName;
     }
 
+    @Override
+    public Set<Integer> getUploadFilesId() throws UploadServiceException {
+        Set<Integer> uploadFilesId;
+        try {
+            uploadFilesId = fileInfoDAO.getAllUploadFilesId();
+        } catch (DAOSQLException e) {
+            throw new UploadServiceException("DAOException in UploadFileServiceImpl in writeNameToDB() method.", e);
+        }
+        return uploadFilesId;
+    }
 
-    private void writeFileNameToDB(UploadFile file) {
+    @Override
+    public UploadFile getUploadFile(int fileId) throws UploadServiceException {
+        UploadFile uploadFileById;
+        try {
+            uploadFileById = fileInfoDAO.getUploadFileById(fileId);
+        } catch (DAOSQLException e) {
+            throw new UploadServiceException("DAOException in UploadFileServiceImpl in getUploadFile() method.", e);
+        }
+        return uploadFileById;
+    }
 
-        fileInfoDAO.insertFileInfo(file);
 
+    private void writeFileNameToDB(UploadFile file) throws DAOSQLException {
+        fileInfoDAO.insertUploadFileInfo(file);
     }
 
 }

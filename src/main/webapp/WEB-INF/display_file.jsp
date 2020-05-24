@@ -9,7 +9,13 @@
 </head>
 <body>
 <div>
-    <img  style="width:70px;height: 70px" alt="alt" src="${requestScope.url}">
+    <c:forEach var="item" items="${requestScope.filesId}">
+        <img style="width:70px;height: 70px" alt="alt"
+             src="http://localhost:8080/file_upload/display?command=get_file&file_id=${item}">
+    </c:forEach>
+</div>
+<div>
+    <a href="http://localhost:8080/file_upload/index.jsp"> <button type="submit">Отправить </button></a>
 </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package by.itech.upload.logic.validator.impl;
 
 import by.itech.upload.bean.UploadFile;
+import by.itech.upload.dao.DAOSQLException;
 import by.itech.upload.dao.FileInfoDAO;
 import by.itech.upload.logic.validator.FileNameValidator;
 
@@ -28,7 +29,12 @@ public class FileNameValidatorImpl implements FileNameValidator {
     }
 
     private void setFileName(FileInfoDAO fileInfoDAO) {
-        this.fileNames = fileInfoDAO.getAllFileName();
+        try {
+            this.fileNames = fileInfoDAO.getAllUploadFileInfoTitle();
+        } catch (DAOSQLException e) {
+            //todo
+            e.printStackTrace();
+        }
     }
 
 }
