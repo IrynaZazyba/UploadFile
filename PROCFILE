@@ -1,1 +1,1 @@
-web: java -war target/FileUploadApp-1.0.war
+web: java -jar target/FileUploadApp-1.0.war
