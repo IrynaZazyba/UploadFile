@@ -23,16 +23,13 @@ public class DisplayFilePage implements FrontCommand {
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
         String rootDir = request.getServletContext().getRealPath("");
 
-        try {
             Set<String> allUploadFile = uploadFileService.getUploadFileNames(rootDir);
             request.setAttribute("fileNames", allUploadFile);
 
             //todo проверить есть ли request dispatcher
             request.getRequestDispatcher("WEB-INF/display_file.jsp").forward(request, response);
 
-        } catch (UploadServiceException e) {
-            response.sendRedirect("errorPage.jsp");
-        }
+
 
     }
 }
