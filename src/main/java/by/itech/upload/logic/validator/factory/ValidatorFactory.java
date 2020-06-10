@@ -1,6 +1,5 @@
 package by.itech.upload.logic.validator.factory;
 
-import by.itech.upload.dao.FileInfoDAO;
 import by.itech.upload.logic.validator.FileFormatValidator;
 import by.itech.upload.logic.validator.FileNameValidator;
 import by.itech.upload.logic.validator.FileSizeValidator;

@@ -38,6 +38,7 @@ public class UploadFile implements AjaxCommand {
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
 
         try {
+            System.out.println(request.getRequestURL());
 
             Part file = request.getPart(REQUEST_FILE_PARAMETER);
 

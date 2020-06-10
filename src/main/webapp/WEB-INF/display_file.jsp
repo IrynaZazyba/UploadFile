@@ -9,13 +9,13 @@
 </head>
 <body>
 <div>
-    <c:forEach var="item" items="${requestScope.filesId}">
+    <c:forEach var="fileName" items="${requestScope.fileNames}">
         <img style="width:70px;height: 70px" alt="alt"
-             src="http://localhost:8080/file_upload/display?command=get_file&file_id=${item}">
+             src="${pageContext.request.contextPath}/display?command=get_file&fileName=${fileName}">
     </c:forEach>
 </div>
 <div>
-    <a href="http://localhost:8080/file_upload/index.jsp"> <button type="submit">Отправить </button></a>
+    <a href="${pageContext.request.contextPath}/index.jsp"> <button type="submit">Назад </button></a>
 </div>
 </body>
 </html>

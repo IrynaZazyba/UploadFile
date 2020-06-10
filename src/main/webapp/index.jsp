@@ -9,6 +9,7 @@
 </head>
 <body>
 <div>
+<div id="errorMessage"></div>
 
 <form id="uploadImageForm" onsubmit="uploadFile();return false" enctype="multipart/form-data" method="post" action="upload">
     <input type="hidden" name="command" value="upload_file">
