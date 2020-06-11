@@ -10,9 +10,12 @@
 <body>
 <div>
     <c:forEach var="fileName" items="${requestScope.fileNames}">
-        <img style="width:70px;height: 70px" alt="alt"
+        <img style="width:70px;height: 70px" alt="${fileName}"
              src="${pageContext.request.contextPath}/display?command=get_file&fileName=${fileName}">
     </c:forEach>
+
+
+
 </div>
 <div>
     <a href="${pageContext.request.contextPath}/index.jsp"> <button type="submit">Назад </button></a>

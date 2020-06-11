@@ -8,6 +8,9 @@ import by.itech.upload.logic.validator.exception.IllegalFileFormatException;
 import by.itech.upload.logic.validator.exception.IllegalFileNameException;
 import by.itech.upload.logic.validator.exception.IllegalFileSizeException;
 import com.google.gson.Gson;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UploadFile implements AjaxCommand {
+
+    private static Logger logger = LogManager.getLogger();
 
     private final static String RESPONSE_PARAMETER_MESSAGE = "message";
     private final static String RESPONSE_MESSAGE_SUCCESS_UPLOAD = "File was successfully upload";
@@ -38,8 +43,6 @@ public class UploadFile implements AjaxCommand {
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
 
         try {
-            System.out.println(request.getRequestURL());
-
             Part file = request.getPart(REQUEST_FILE_PARAMETER);
 
             if (file != null) {
@@ -56,16 +59,20 @@ public class UploadFile implements AjaxCommand {
             }
 
         } catch (UploadServiceException e) {
-            response.sendRedirect("errorPage.jsp");
+            logger.log(Level.ERROR, "Upload service exception in UploadFile command method execute", e);
+            response.setStatus(500);
         } catch (IllegalFileFormatException e) {
+            logger.log(Level.ERROR, "Illegal file format exception in UploadFile command method execute", e);
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_FORMAT);
             ajaxResponse = gson.toJson(answer);
         } catch (IllegalFileSizeException e) {
+            logger.log(Level.ERROR, "Illegal file size exception in UploadFile command method execute", e);
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_SIZE);
             ajaxResponse = gson.toJson(answer);
         } catch (IllegalFileNameException e) {
+            logger.log(Level.ERROR, "Illegal file name exception in UploadFile command method execute", e);
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_NAME);
             ajaxResponse = gson.toJson(answer);

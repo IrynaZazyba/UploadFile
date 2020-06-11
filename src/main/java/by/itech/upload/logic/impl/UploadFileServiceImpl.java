@@ -23,7 +23,7 @@ import java.util.Set;
 public class UploadFileServiceImpl implements UploadFileService {
 
     private final static Logger logger = LogManager.getLogger();
-    private final static String UPLOAD_DIRECTORY = "\\upload";
+    private final static String UPLOAD_DIRECTORY = "upload";
 
 
     @Override
@@ -38,9 +38,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 
         String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY;
 
-        System.out.println(part.getContentType());
-
-        if (!fileFormatValidator.validate(part.getContentType())) {
+        if (!fileFormatValidator.validate(part.getSubmittedFileName())) {
             throw new IllegalFileFormatException("Illegal file format");
         }
 
@@ -63,7 +61,7 @@ public class UploadFileServiceImpl implements UploadFileService {
             }
             part.write(uploadPath + File.separator + fileName);
         } catch (IOException e) {
-            logger.log(Level.ERROR, e.getMessage(), e);
+            logger.log(Level.ERROR,"Error with write file to the directory", e);
             throw new UploadServiceException("Error with write file to the directory " + UPLOAD_DIRECTORY, e);
         }
         return uploadPath + File.separator + fileName;
@@ -75,7 +73,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY;
         File folder = new File(uploadPath);
         File[] files = folder.listFiles();
-        if (files!=null) {
+        if (files != null) {
             for (File file : files) {
                 uploadFileNames.add(file.getName());
             }
@@ -85,8 +83,14 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
     public File getUploadFile(String name, String rootDir) {
-        String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY+File.separator + name;
-       return new File(uploadPath);
+        String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY + File.separator + name;
+        File file = new File(uploadPath);
+        boolean exists = file.exists();
+        if (exists) {
+            return file;
+        } else {
+            return null;
+        }
     }
 
 

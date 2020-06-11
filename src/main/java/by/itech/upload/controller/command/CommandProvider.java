@@ -5,7 +5,7 @@ import by.itech.upload.controller.command.ajax.AjaxCommandName;
 import by.itech.upload.controller.command.ajax.impl.UploadFile;
 import by.itech.upload.controller.command.front.FrontCommand;
 import by.itech.upload.controller.command.front.FrontCommandName;
-import by.itech.upload.controller.command.front.impl.DisplayFilePage;
+import by.itech.upload.controller.command.front.impl.DisplayFile;
 import by.itech.upload.controller.command.front.impl.GetFile;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class CommandProvider {
 
     private CommandProvider() {
         ajaxRepository.put(AjaxCommandName.UPLOAD_FILE, new UploadFile());
-        frontRepository.put(FrontCommandName.DISPLAY_FILE, new DisplayFilePage());
+        frontRepository.put(FrontCommandName.DISPLAY_FILE, new DisplayFile());
         frontRepository.put(FrontCommandName.GET_FILE,new GetFile());
 
     }

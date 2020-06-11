@@ -7,7 +7,7 @@ async function uploadFile() {
 
     let uploadFile = document.getElementById("uploadImageForm");
 
-    let response = await fetch("/file_upload/upload", {
+    let response = await fetch("/upload", {
         method: 'POST',
         body: new FormData(uploadFile),
     });
