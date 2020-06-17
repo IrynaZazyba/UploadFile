@@ -1,4 +1,4 @@
-package by.itech.upload.logic;
+package by.itech.upload.logic.exception;
 
 public class UploadServiceException extends Exception {
 

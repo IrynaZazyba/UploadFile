@@ -5,7 +5,7 @@
     <title>Welcome</title>
     <meta charset="UTF-8">
     <script src="resources/js/script.js"></script>
-    <%--    <link rel="stylesheet" type="text/css" href="style.css">--%>
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
 </head>
 <body>
 <div>
@@ -14,11 +14,9 @@
              src="${pageContext.request.contextPath}/display?command=get_file&fileName=${fileName}">
     </c:forEach>
 
-
-
 </div>
 <div>
-    <a href="${pageContext.request.contextPath}/index.jsp"> <button type="submit">Назад </button></a>
+    <a href="${pageContext.request.contextPath}/index.jsp"> <button type="submit" class="btn-back">Назад </button></a>
 </div>
 </body>
 </html>

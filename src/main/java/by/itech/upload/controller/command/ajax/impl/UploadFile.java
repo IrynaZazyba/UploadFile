@@ -3,7 +3,7 @@ package by.itech.upload.controller.command.ajax.impl;
 import by.itech.upload.controller.command.ajax.AjaxCommand;
 import by.itech.upload.logic.ServiceFactory;
 import by.itech.upload.logic.UploadFileService;
-import by.itech.upload.logic.UploadServiceException;
+import by.itech.upload.logic.exception.UploadServiceException;
 import by.itech.upload.logic.validator.exception.IllegalFileFormatException;
 import by.itech.upload.logic.validator.exception.IllegalFileNameException;
 import by.itech.upload.logic.validator.exception.IllegalFileSizeException;
@@ -29,6 +29,7 @@ public class UploadFile implements AjaxCommand {
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_FORMAT = "Illegal file format";
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_SIZE = "Illegal file size";
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_NAME = "File with the same name already exists";
+    private final static String RESPONSE_MESSAGE_EMPTY_FILE = "Please, upload file";
     private final static String REQUEST_FILE_PARAMETER = "img";
 
 
@@ -46,20 +47,18 @@ public class UploadFile implements AjaxCommand {
             Part file = request.getPart(REQUEST_FILE_PARAMETER);
 
             if (file != null) {
-                String fileLocation = uploadFileService.uploadFile(realPath, file);
-                System.out.println(fileLocation);
-
+                uploadFileService.uploadFile(realPath, file);
                 response.setStatus(200);
                 answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_SUCCESS_UPLOAD);
                 ajaxResponse = gson.toJson(answer);
-
-            } else {
-
-
+            }else{
+                logger.log(Level.ERROR, "Empty file in UploadFile command method execute");
+                response.setStatus(409);
+                answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_EMPTY_FILE);
+                ajaxResponse = gson.toJson(answer);
             }
 
         } catch (UploadServiceException e) {
-            logger.log(Level.ERROR, "Upload service exception in UploadFile command method execute", e);
             response.setStatus(500);
         } catch (IllegalFileFormatException e) {
             logger.log(Level.ERROR, "Illegal file format exception in UploadFile command method execute", e);

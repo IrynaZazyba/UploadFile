@@ -1,10 +1,11 @@
 package by.itech.upload.controller.command.front.impl;
 
 
-import by.itech.upload.controller.command.UploadPathParameter;
-import by.itech.upload.controller.command.UploadResourceManager;
+import by.itech.upload.logic.config.UploadPathParameter;
+import by.itech.upload.logic.config.UploadResourceManager;
 import by.itech.upload.controller.command.front.FrontCommand;
 import by.itech.upload.controller.parameter.RequestParameterName;
+import by.itech.upload.logic.exception.FileNotFoundUploadServiceException;
 import by.itech.upload.logic.ServiceFactory;
 import by.itech.upload.logic.UploadFileService;
 
@@ -29,14 +30,19 @@ public class GetFile implements FrontCommand {
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
         String rootDir = request.getServletContext().getRealPath("");
 
-        File uploadFile = uploadFileService.getUploadFile(fileName, rootDir);
-        if (uploadFile != null) {
+        File uploadFile = null;
+
+        try {
+            //получение файла
+            uploadFile = uploadFileService.getUploadFile(fileName, rootDir);
             String title = uploadFile.getName();
 
-            UploadResourceManager resourceManager=UploadResourceManager.getInstance();
-            String uploadDirectory=resourceManager.getUploadPathValue(UploadPathParameter.UPLOAD_DIRECTORY);
+            //получение директории расположения загруженных файлов
+            UploadResourceManager resourceManager = UploadResourceManager.getInstance();
+            String uploadDirectory = resourceManager.getUploadPathValue(UploadPathParameter.UPLOAD_DIRECTORY);
 
-            try (InputStream in = request.getServletContext().getResourceAsStream( uploadDirectory+File.separator+title);
+            //чтение и передача файла
+            try (InputStream in = request.getServletContext().getResourceAsStream(uploadDirectory + File.separator + title);
                  OutputStream out = response.getOutputStream()) {
 
                 byte[] buffer = in.readAllBytes();
@@ -45,7 +51,8 @@ public class GetFile implements FrontCommand {
                 out.write(buffer);
                 out.flush();
             }
-        } else {
+
+        } catch (FileNotFoundUploadServiceException e) {
             response.setStatus(404);
         }
     }

@@ -1,7 +1,10 @@
 package by.itech.upload.logic.impl;
 
 import by.itech.upload.logic.UploadFileService;
-import by.itech.upload.logic.UploadServiceException;
+import by.itech.upload.logic.config.UploadPathParameter;
+import by.itech.upload.logic.config.UploadResourceManager;
+import by.itech.upload.logic.exception.FileNotFoundUploadServiceException;
+import by.itech.upload.logic.exception.UploadServiceException;
 import by.itech.upload.logic.validator.FileFormatValidator;
 import by.itech.upload.logic.validator.FileNameValidator;
 import by.itech.upload.logic.validator.FileSizeValidator;
@@ -23,12 +26,15 @@ import java.util.Set;
 public class UploadFileServiceImpl implements UploadFileService {
 
     private final static Logger logger = LogManager.getLogger();
-    private final static String UPLOAD_DIRECTORY = "upload";
+    private String uploadDirectory;
 
+    public UploadFileServiceImpl(){
+        UploadResourceManager resourceManager = UploadResourceManager.getInstance();
+        uploadDirectory = resourceManager.getUploadPathValue(UploadPathParameter.UPLOAD_DIRECTORY);
+    }
 
     @Override
-    public String uploadFile(String rootDir, Part part) throws UploadServiceException, IllegalFileFormatException, IllegalFileSizeException, IllegalFileNameException {
-
+    public void uploadFile(String rootDir, Part part) throws UploadServiceException, IllegalFileFormatException, IllegalFileSizeException, IllegalFileNameException {
 
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
@@ -36,7 +42,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         FileSizeValidator fileSizeValidator = validatorFactory.getFileSizeValidator();
         FileNameValidator fileNameValidator = validatorFactory.getFileNameValidator();
 
-        String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY;
+        String uploadPath = rootDir + File.separator + uploadDirectory;
 
         if (!fileFormatValidator.validate(part.getSubmittedFileName())) {
             throw new IllegalFileFormatException("Illegal file format");
@@ -56,21 +62,24 @@ public class UploadFileServiceImpl implements UploadFileService {
             File uploadDir = new File(uploadPath);
 
             if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-                //todo если не записалось удалить???
+                boolean mkdir = uploadDir.mkdir();
+                if (!mkdir) {
+                    logger.log(Level.ERROR, "Error with create directory in UploadFileServiceImpl uploadFile() method");
+                    throw new UploadServiceException("An error occurred while creating the directory");
+                }
             }
             part.write(uploadPath + File.separator + fileName);
         } catch (IOException e) {
-            logger.log(Level.ERROR,"Error with write file to the directory", e);
-            throw new UploadServiceException("Error with write file to the directory " + UPLOAD_DIRECTORY, e);
+            logger.log(Level.ERROR, "Error with write file to the directory", e);
+            throw new UploadServiceException("Error with write file to the directory " + uploadDirectory, e);
         }
-        return uploadPath + File.separator + fileName;
+
     }
 
     @Override
     public Set<String> getUploadFileNames(String rootDir) {
         Set<String> uploadFileNames = new HashSet<>();
-        String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY;
+        String uploadPath = rootDir + File.separator + uploadDirectory;
         File folder = new File(uploadPath);
         File[] files = folder.listFiles();
         if (files != null) {
@@ -82,15 +91,13 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public File getUploadFile(String name, String rootDir) {
-        String uploadPath = rootDir + File.separator + UPLOAD_DIRECTORY + File.separator + name;
+    public File getUploadFile(String name, String rootDir) throws FileNotFoundUploadServiceException {
+        String uploadPath = rootDir + File.separator + uploadDirectory + File.separator + name;
         File file = new File(uploadPath);
-        boolean exists = file.exists();
-        if (exists) {
-            return file;
-        } else {
-            return null;
+        if (!file.exists()) {
+            throw new FileNotFoundUploadServiceException("Exception in attempt to receive not exists file");
         }
+        return file;
     }
 
 

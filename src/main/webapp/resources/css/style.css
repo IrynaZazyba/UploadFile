@@ -1,0 +1,11 @@
+.btn-back{
+    margin-top: 10px;
+}
+
+.block-upload-form{
+    width: 300px;
+    height: 200px;
+    border: 1px solid black;
+    margin: 0 auto;
+    padding: 5px;
+}

@@ -1,4 +1,4 @@
-package by.itech.upload.controller.command;
+package by.itech.upload.logic.config;
 
 public final class UploadPathParameter {
 
