@@ -29,7 +29,8 @@ public class UploadFile implements AjaxCommand {
     private final static String RESPONSE_MESSAGE_SUCCESS_UPLOAD = "File was successfully upload";
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_FORMAT = "Illegal file format";
     private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_SIZE = "Illegal file size";
-    private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_NAME = "File with the same name already exists";
+    private final static String RESPONSE_MESSAGE_ILLEGAL_FILE_NAME = "File with the same name already exists or " +
+            "filename contains illegal characters";
     private final static String RESPONSE_MESSAGE_EMPTY_FILE = "Please, upload file";
     private final static String REQUEST_FILE_PARAMETER = "img";
 

@@ -48,12 +48,17 @@ public class UploadFileServiceImpl implements UploadFileService {
             throw new IllegalFileFormatException("Illegal file format");
         }
 
+
         if (!fileSizeValidator.validate(part.getSize())) {
             throw new IllegalFileSizeException("File exceeds permissible size");
         }
 
         String fileName = part.getSubmittedFileName();
-        if (!fileNameValidator.validate(fileName, uploadPath)) {
+        if (!fileNameValidator.validateExistsName(fileName, uploadPath)) {
+            throw new IllegalFileNameException("File name contains illegal characters");
+        }
+
+        if (!fileNameValidator.validateNameForSpecialCharacters(fileName)) {
             throw new IllegalFileNameException("File with the same name already exists");
         }
 

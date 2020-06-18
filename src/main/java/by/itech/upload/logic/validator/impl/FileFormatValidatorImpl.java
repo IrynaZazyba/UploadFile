@@ -26,7 +26,7 @@ public class FileFormatValidatorImpl implements FileFormatValidator {
             FileFormat.valueOf(fileFormat.toUpperCase());
             return true;
         } catch (IllegalArgumentException ex) {
-            logger.log(Level.ERROR, "Illegal argument exception in FileFormatValidatorImpl method validate", ex);
+            logger.log(Level.ERROR, "Illegal argument exception in FileFormatValidatorImpl method validateExistsName", ex);
             return false;
         }
     }
