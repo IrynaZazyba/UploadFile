@@ -28,9 +28,9 @@ public class DisplayFile implements FrontCommand {
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
-        String rootDir = request.getServletContext().getRealPath("");
+        String appPath  = request.getServletContext().getRealPath("");
 
-        Set<String> allUploadFile = uploadFileService.getUploadFileNames(rootDir);
+        Set<String> allUploadFile = uploadFileService.getUploadFileNames(appPath );
         request.setAttribute(RequestParameterName.ALL_FILE_NAMES, allUploadFile);
 
         try {

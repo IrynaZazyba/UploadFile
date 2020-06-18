@@ -3,9 +3,9 @@ package by.itech.upload.logic.validator.impl;
 import by.itech.upload.logic.validator.FileSizeValidator;
 
 /**
- * Класс FileSizeValidatorImpl реализует валидатор
- * по проверке размера файлов. Размер ограничен
- * константой FILE_SIZE_LIMIT.
+ * The FileSizeValidatorImpl class implements
+ * a file size validator. The size is limited
+ * by the constant FILE_SIZE_LIMIT.
  */
 public class FileSizeValidatorImpl implements FileSizeValidator {
 

@@ -1,8 +1,7 @@
 package by.itech.upload.controller.parameter;
 
 /**
- * Класс RequestParameterName предоставляет список
- * констант параметров запроса
+ * The class provides a list of query parameters
  */
 public class RequestParameterName {
 

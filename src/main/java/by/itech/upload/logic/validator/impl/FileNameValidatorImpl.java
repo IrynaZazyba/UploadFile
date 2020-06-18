@@ -5,9 +5,9 @@ import by.itech.upload.logic.validator.FileNameValidator;
 import java.io.File;
 
 /**
- * Класс FileNameValidatorImpl реализует валидатор
- * по проверке имени файлов. Исключает повторяющиеся имена.
- * Не чувствителен к регистру.
+ * The FileNameValidatorImpl class implements
+ * a file name validator. Excludes duplicate names.
+ * Case insensitive
  */
 public class FileNameValidatorImpl implements FileNameValidator {
 

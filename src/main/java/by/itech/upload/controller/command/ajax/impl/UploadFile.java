@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class UploadFile implements AjaxCommand {
         Map<String, String> answer = new HashMap<>();
         Gson gson = new Gson();
 
-        String realPath = request.getServletContext().getRealPath("");
+        String appPath  = request.getServletContext().getRealPath("");
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
 
@@ -47,7 +48,7 @@ public class UploadFile implements AjaxCommand {
             Part file = request.getPart(REQUEST_FILE_PARAMETER);
 
             if (file != null) {
-                uploadFileService.uploadFile(realPath, file);
+                uploadFileService.uploadFile(appPath , file);
                 response.setStatus(200);
                 answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_SUCCESS_UPLOAD);
                 ajaxResponse = gson.toJson(answer);

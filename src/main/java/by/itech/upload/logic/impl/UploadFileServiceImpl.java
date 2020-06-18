@@ -34,7 +34,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public void uploadFile(String rootDir, Part part) throws UploadServiceException, IllegalFileFormatException, IllegalFileSizeException, IllegalFileNameException {
+    public void uploadFile(String appPath , Part part) throws UploadServiceException, IllegalFileFormatException, IllegalFileSizeException, IllegalFileNameException {
 
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
@@ -42,7 +42,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         FileSizeValidator fileSizeValidator = validatorFactory.getFileSizeValidator();
         FileNameValidator fileNameValidator = validatorFactory.getFileNameValidator();
 
-        String uploadPath = rootDir + File.separator + uploadDirectory;
+        String uploadPath = appPath  + File.separator + uploadDirectory;
 
         if (!fileFormatValidator.validate(part.getSubmittedFileName())) {
             throw new IllegalFileFormatException("Illegal file format");
@@ -56,7 +56,6 @@ public class UploadFileServiceImpl implements UploadFileService {
         if (!fileNameValidator.validate(fileName, uploadPath)) {
             throw new IllegalFileNameException("File with the same name already exists");
         }
-
 
         try {
             File uploadDir = new File(uploadPath);
@@ -77,9 +76,9 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public Set<String> getUploadFileNames(String rootDir) {
+    public Set<String> getUploadFileNames(String appPath ) {
         Set<String> uploadFileNames = new HashSet<>();
-        String uploadPath = rootDir + File.separator + uploadDirectory;
+        String uploadPath = appPath  + File.separator + uploadDirectory;
         File folder = new File(uploadPath);
         File[] files = folder.listFiles();
         if (files != null) {
@@ -91,8 +90,8 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public File getUploadFile(String name, String rootDir) throws FileNotFoundUploadServiceException {
-        String uploadPath = rootDir + File.separator + uploadDirectory + File.separator + name;
+    public File getUploadFile(String name, String appPath ) throws FileNotFoundUploadServiceException {
+        String uploadPath = appPath  + File.separator + uploadDirectory + File.separator + name;
         File file = new File(uploadPath);
         if (!file.exists()) {
             throw new FileNotFoundUploadServiceException("Exception in attempt to receive not exists file");

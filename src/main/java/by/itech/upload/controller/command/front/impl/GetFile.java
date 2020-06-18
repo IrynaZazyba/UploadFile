@@ -28,20 +28,20 @@ public class GetFile implements FrontCommand {
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
-        String rootDir = request.getServletContext().getRealPath("");
+        String appPath  = request.getServletContext().getRealPath("");
 
         File uploadFile = null;
 
         try {
-            //получение файла
-            uploadFile = uploadFileService.getUploadFile(fileName, rootDir);
+            //getting downloaded file
+            uploadFile = uploadFileService.getUploadFile(fileName, appPath );
             String title = uploadFile.getName();
 
-            //получение директории расположения загруженных файлов
+            //getting the directory of downloaded files
             UploadResourceManager resourceManager = UploadResourceManager.getInstance();
             String uploadDirectory = resourceManager.getUploadPathValue(UploadPathParameter.UPLOAD_DIRECTORY);
 
-            //чтение и передача файла
+            //reading and transferring file
             try (InputStream in = request.getServletContext().getResourceAsStream(uploadDirectory + File.separator + title);
                  OutputStream out = response.getOutputStream()) {
 

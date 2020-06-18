@@ -1,8 +1,7 @@
 package by.itech.upload.controller.parameter;
 
 /**
- * Класс JspPageName предоставляет список
- * констант страниц JSP
+ * The class provides a list of JSP pages.
  */
 public final class JspPageName {
 

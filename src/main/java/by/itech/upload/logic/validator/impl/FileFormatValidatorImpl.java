@@ -7,9 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Класс FileFormatValidatorImpl реализует валидатор
- * проверки формата загружаемых файлов. Ограничен значениями
- * перечисления FileFormat
+ * The FileFormatValidatorImpl class implements a validator
+ * for checking the format of the downloaded files. Limited
+ * to FileFormat enumeration values.
  */
 public class FileFormatValidatorImpl implements FileFormatValidator {
 
