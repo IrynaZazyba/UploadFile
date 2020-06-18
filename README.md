@@ -10,7 +10,7 @@ The application provides the ability to download and display files of certain fo
 ### Restrictions
 - format of downloaded files (JPG, PNG, GIF)
 - size of downloaded files (2Mb)
-- files with the same name cannot be uploaded
+- files with the same name cannot be uploaded (case insensitive)
 
 ### Features
 Files are saved in the project root directory. All changes (for example, new files) will be lost every time you redeploy the application.
