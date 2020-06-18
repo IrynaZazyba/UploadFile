@@ -63,7 +63,6 @@ public class UploadFileServiceImpl implements UploadFileService {
             if (!uploadDir.exists()) {
                 boolean mkdir = uploadDir.mkdir();
                 if (!mkdir) {
-                    logger.log(Level.ERROR, "Error with create directory in UploadFileServiceImpl uploadFile() method");
                     throw new UploadServiceException("An error occurred while creating the directory");
                 }
             }

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="block-upload-form">
-    <div id="errorMessage"></div>
+    <div id="message"></div>
 
     <form id="uploadImageForm" onsubmit="uploadFile();return false" enctype="multipart/form-data" method="post"
           action="upload">

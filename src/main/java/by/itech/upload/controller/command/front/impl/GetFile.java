@@ -8,6 +8,9 @@ import by.itech.upload.controller.parameter.RequestParameterName;
 import by.itech.upload.logic.exception.FileNotFoundUploadServiceException;
 import by.itech.upload.logic.ServiceFactory;
 import by.itech.upload.logic.UploadFileService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,8 @@ import java.io.OutputStream;
 
 public class GetFile implements FrontCommand {
 
+    private final static Logger logger = LogManager.getLogger();
+
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -30,7 +35,7 @@ public class GetFile implements FrontCommand {
         UploadFileService uploadFileService = serviceFactory.getUploadFileService();
         String appPath  = request.getServletContext().getRealPath("");
 
-        File uploadFile = null;
+        File uploadFile;
 
         try {
             //getting downloaded file
@@ -53,6 +58,7 @@ public class GetFile implements FrontCommand {
             }
 
         } catch (FileNotFoundUploadServiceException e) {
+            logger.log(Level.ERROR, "FileNotFoundUploadServiceException in GetFile command method execute()", e);
             response.setStatus(404);
         }
     }

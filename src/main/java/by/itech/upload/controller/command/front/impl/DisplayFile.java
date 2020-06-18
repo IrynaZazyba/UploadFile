@@ -36,7 +36,7 @@ public class DisplayFile implements FrontCommand {
         try {
             forwardToPage(request, response, JspPageName.DISPLAY_FILE);
         } catch (ForwardCommandException e) {
-            logger.log(Level.ERROR,"Forward to page Exception in DisplayFile command", e);
+            logger.log(Level.ERROR,"Forward to page Exception in DisplayFile command method execute()", e);
             response.sendRedirect(JspPageName.ERROR_PAGE);
         }
     }

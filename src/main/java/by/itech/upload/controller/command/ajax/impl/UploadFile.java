@@ -60,19 +60,20 @@ public class UploadFile implements AjaxCommand {
             }
 
         } catch (UploadServiceException e) {
+            logger.log(Level.ERROR, "Error with create directory in UploadFile command method execute()");
             response.setStatus(500);
         } catch (IllegalFileFormatException e) {
-            logger.log(Level.ERROR, "Illegal file format exception in UploadFile command method execute", e);
+            logger.log(Level.ERROR, "Illegal file format exception in UploadFile command method execute()", e);
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_FORMAT);
             ajaxResponse = gson.toJson(answer);
         } catch (IllegalFileSizeException e) {
-            logger.log(Level.ERROR, "Illegal file size exception in UploadFile command method execute", e);
+            logger.log(Level.ERROR, "Illegal file size exception in UploadFile command method execute()", e);
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_SIZE);
             ajaxResponse = gson.toJson(answer);
         } catch (IllegalFileNameException e) {
-            logger.log(Level.ERROR, "Illegal file name exception in UploadFile command method execute", e);
+            logger.log(Level.ERROR, "Illegal file name exception in UploadFile command method execute()", e);
             response.setStatus(409);
             answer.put(RESPONSE_PARAMETER_MESSAGE, RESPONSE_MESSAGE_ILLEGAL_FILE_NAME);
             ajaxResponse = gson.toJson(answer);
